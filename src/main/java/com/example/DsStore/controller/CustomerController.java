@@ -1,9 +1,13 @@
 package com.example.DsStore.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.DsStore.entities.Customer;
+import com.example.DsStore.payloads.ApiResponse;
 import com.example.DsStore.services.CustomerService;
 
 @RestController
@@ -36,8 +41,23 @@ public class CustomerController {
 	}
 	
 	//DELETE - delete customer
-	
-	//GET - get customer 
-	
+		@DeleteMapping("/{customerId}")
+		public ResponseEntity<ApiResponse> deleteUser(@PathVariable Integer customerId){
+			this.customerService.deleteCustomer(customerId);
+			return new ResponseEntity<ApiResponse>(new ApiResponse("Customer deleted successfully",true),HttpStatus.OK);
+		}
+
+		//GET ALL - get all customers 
+		@GetMapping("/")
+		public ResponseEntity<List<Customer>> getAllGoals(){
+			return ResponseEntity.ok(this.customerService.getAllCustomers());
+		}
+
+		//GET - get customer
+		@GetMapping("/{customerId}")
+		public ResponseEntity<Customer>getSingleGoal(@PathVariable Integer customerId){
+			return ResponseEntity.ok(this.customerService.getCustomerById(customerId));
+		}
+
 	
 }
