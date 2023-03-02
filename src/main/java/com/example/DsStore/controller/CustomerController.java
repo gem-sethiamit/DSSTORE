@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.DsStore.entities.Customer;
 import com.example.DsStore.exceptions.ApiResponse;
+import com.example.DsStore.exceptions.IdNotFoundException;
 import com.example.DsStore.exceptions.ResourceNotFoundException;
 import com.example.DsStore.services.CustomerService;
 
@@ -44,12 +45,13 @@ public class CustomerController {
 
 	/**
 	 * Put request to update existing Customer based on given Customer Id.
-	 *
+	 * 
+	 * @throws IdNotFoundException if Customer id not found
 	 * @return ResponseEntity <Customer>
 	 */
 	@PutMapping("/{customerId}")
 	public ResponseEntity<Customer> updateCustomer(@Valid @RequestBody Customer customer,
-			@PathVariable Integer customerId) {
+			@PathVariable Integer customerId) throws IdNotFoundException {
 		Customer updatedCustomer = this.customerService.updateCustomer(customer, customerId);
 		log.info("Customer Updated");
 		return ResponseEntity.ok(updatedCustomer);
@@ -57,11 +59,12 @@ public class CustomerController {
 
 	/**
 	 * Delete request to delete customer from customer database.
-	 *
+	 * 
+	 * @throws IdNotFoundException if Customer id not found
 	 * @return ResponseEntity <ApiResponse>
 	 */
 	@DeleteMapping("/{customerId}")
-	public ResponseEntity<ApiResponse> deleteCustomer(@PathVariable Integer customerId) {
+	public ResponseEntity<ApiResponse> deleteCustomer(@PathVariable Integer customerId) throws IdNotFoundException {
 		this.customerService.deleteCustomer(customerId);
 		log.info("Customer Deleted");
 		return new ResponseEntity<ApiResponse>(new ApiResponse("Customer deleted successfully", true), HttpStatus.OK);
@@ -71,9 +74,10 @@ public class CustomerController {
 	 * Get All Customers.
 	 *
 	 * @return ResponseEntity <List<Customer>>
+	 * @throws ResourceNotFoundException
 	 */
 	@GetMapping("/")
-	public ResponseEntity<List<Customer>> getAllCustomers() {
+	public ResponseEntity<List<Customer>> getAllCustomers() throws ResourceNotFoundException {
 		log.info("Get All Customers");
 		return ResponseEntity.ok(this.customerService.getAllCustomers());
 	}
@@ -82,10 +86,10 @@ public class CustomerController {
 	 * Get request to get specific Customer customer ID.
 	 *
 	 * @return ResponseEntity <Customer>
-	 * @throws ResourceNotFoundException Customer id not found
+	 * @throws IdNotFoundException if Customer id not found
 	 */
 	@GetMapping("/{customerId}")
-	public ResponseEntity<Customer> getCustomer(@PathVariable Integer customerId) throws ResourceNotFoundException {
+	public ResponseEntity<Customer> getCustomer(@PathVariable Integer customerId) throws IdNotFoundException {
 		log.info("Get Customer by Id");
 		return ResponseEntity.ok(this.customerService.getCustomerById(customerId));
 	}
