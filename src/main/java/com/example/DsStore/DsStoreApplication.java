@@ -9,5 +9,4 @@ public class DsStoreApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DsStoreApplication.class, args);
 	}
-
 }
