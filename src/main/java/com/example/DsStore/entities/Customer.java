@@ -7,12 +7,14 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Customer {
@@ -24,7 +26,7 @@ public class Customer {
 	@Size(min = 4, message = "Customer name must be min of 4 characters !!")
 	String customerName;
 	@NotEmpty
-	@Size(min = 8, message = "Customer Address must be min of 8 characters")
+	@Size(min = 5, message = "Customer Address must be min of 8 characters")
 	String customerAddress;
 
 	int customerNumber;
