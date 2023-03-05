@@ -43,7 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public Customer updateCustomer(Customer changesCustomer, Integer customerId) {
 
 		Customer oldCustomer = this.customerRepo.findById(customerId)
-				.orElseThrow(() -> new IdNotFoundException("Customer", "customerId", customerId));
+				.orElseThrow(() -> new IdNotFoundException("Customer","Customer Id",customerId));
 		oldCustomer.setCustomerName(changesCustomer.getCustomerName());
 		oldCustomer.setCustomerAddress(changesCustomer.getCustomerAddress());
 		oldCustomer.setCustomerNumber(changesCustomer.getCustomerNumber());
@@ -63,7 +63,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public Customer getCustomerById(Integer customerId) {
 
 		Customer customerFound = this.customerRepo.findById(customerId)
-				.orElseThrow(() -> new IdNotFoundException("Customer", "customerId", customerId));
+				.orElseThrow(() -> new IdNotFoundException("Customer","Customer Id",customerId));
 		log.info("Customer by id found");
 		return customerFound;
 	}
@@ -95,7 +95,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public void deleteCustomer(Integer customerId) {
 
 		Customer customerDelete = this.customerRepo.findById(customerId)
-				.orElseThrow(() -> new IdNotFoundException("Customer", "customerId", customerId));
+				.orElseThrow(() -> new IdNotFoundException("Customer","Customer Id",customerId));
 		this.customerRepo.delete(customerDelete);
 		log.info("Customer deleted with id "+customerId);
 	}

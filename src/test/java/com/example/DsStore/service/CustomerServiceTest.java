@@ -8,19 +8,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 
-import com.example.DsStore.services.CustomerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.DsStore.exceptions.IdNotFoundException;
 import com.example.DsStore.exceptions.ResourceNotFoundException;
@@ -70,6 +68,20 @@ public class CustomerServiceTest {
 	}
 
 	/**
+	 * Update Product negative Test
+	 *
+	 * @throws IdNotFoundException id not found
+	 */
+	@Test
+	public void testUpdateProductException() {
+		when(customerRepo.findById(anyInt())).thenReturn(Optional.empty());
+		Customer customer = new Customer(1, "Amit", "Punjab", 12345);
+		
+		assertThatThrownBy(()-> customerService.updateCustomer(customer, 1))
+		                .isInstanceOf(IdNotFoundException.class);
+	}
+
+	/**
 	 * Get Customer by Id.
 	 *
 	 * @throws IdNotFoundException id not found
@@ -82,6 +94,19 @@ public class CustomerServiceTest {
 		assertEquals("Amit", customerService.getCustomerById(1).getCustomerName());
 		assertEquals("Punjab", customerService.getCustomerById(1).getCustomerAddress());
 		assertEquals(12345, customerService.getCustomerById(1).getCustomerNumber());
+	}
+
+	/**
+	 * Get Negative Customer by Id.
+	 *
+	 * @throws IdNotFoundException id not found
+	 */
+	@Test
+	public void testGetCustomerByIdException() {
+		when(customerRepo.findById(anyInt())).thenReturn(Optional.empty());
+		
+		assertThatThrownBy(() -> customerService.getCustomerById(1))
+		                   .isInstanceOf(IdNotFoundException.class);
 	}
 
 	/**
@@ -101,6 +126,21 @@ public class CustomerServiceTest {
 	}
 
 	/**
+	 * Get All Negative Customers Test.
+	 *
+	 * @throws ResourceNotFoundException No data found
+	 */
+
+	@Test
+	public void testGetAllCustomersException() {
+		List<Customer> customerList = new ArrayList<>();
+		when(customerRepo.findAll()).thenReturn(customerList);
+
+		assertThatThrownBy(() -> customerService.getAllCustomers()).isInstanceOf(ResourceNotFoundException.class);
+
+	}
+
+	/**
 	 * Delete Product Test
 	 *
 	 * @throws IdNotFoundException       id not found
@@ -117,8 +157,20 @@ public class CustomerServiceTest {
 		when(customerRepo.findAll()).thenReturn(customerList);
 
 		assertEquals(1, customerService.getAllCustomers().size());
-		assertThatThrownBy(() -> customerService.getCustomerById(3)).isInstanceOf(IdNotFoundException.class);
+		assertThatThrownBy(() -> customerService.getCustomerById(2)).isInstanceOf(IdNotFoundException.class);
 
 	}
+	
+	 @Test
+	    public void testDeleteCustomer1() {
+		 Customer customer = new Customer(2, "Amit", "Punjab", 12345);
+	        when(customerRepo.findById(anyInt())).thenReturn(Optional.of(customer));
+	        doNothing().when(customerRepo).delete(customer);
+
+	        customerService.deleteCustomer(customer.getCustomerId());
+
+	        verify(customerRepo).findById(2);
+	        verify(customerRepo).delete(customer);
+	    }
 
 }
