@@ -143,34 +143,18 @@ public class CustomerServiceTest {
 	/**
 	 * Delete Product Test
 	 *
-	 * @throws IdNotFoundException       id not found
-	 * @throws ResourceNotFoundException
 	 */
-	
-	public void testDeleteCustomer() throws IdNotFoundException, ResourceNotFoundException {
+
+	@Test
+	public void testDeleteCustomer1() {
 		Customer customer = new Customer(2, "Amit", "Punjab", 12345);
-		List<Customer> customerList = List.of(customer);
-
 		when(customerRepo.findById(anyInt())).thenReturn(Optional.of(customer));
-		when(customerRepo.save(any(Customer.class))).thenReturn(customer);
-		customerService.deleteCustomer(2);
-		when(customerRepo.findAll()).thenReturn(customerList);
+		doNothing().when(customerRepo).delete(customer);
 
-		assertEquals(1, customerService.getAllCustomers().size());
-		assertThatThrownBy(() -> customerService.getCustomerById(2)).isInstanceOf(IdNotFoundException.class);
+		customerService.deleteCustomer(customer.getCustomerId());
 
+		verify(customerRepo).findById(2);
+		verify(customerRepo).delete(customer);
 	}
-	
-	 @Test
-	    public void testDeleteCustomer1() {
-		 Customer customer = new Customer(2, "Amit", "Punjab", 12345);
-	        when(customerRepo.findById(anyInt())).thenReturn(Optional.of(customer));
-	        doNothing().when(customerRepo).delete(customer);
-
-	        customerService.deleteCustomer(customer.getCustomerId());
-
-	        verify(customerRepo).findById(2);
-	        verify(customerRepo).delete(customer);
-	    }
 
 }
