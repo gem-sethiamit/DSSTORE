@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.DsStore.exceptions.IdNotFoundException;
@@ -46,6 +48,7 @@ public class CustomerServiceTest {
 		Customer newCustomer = customerService.createCustomer(customer);
 		assertNotNull(newCustomer);
 		assertEquals(customer, newCustomer);
+		verify(customerRepo).save(any(Customer.class));
 	}
 
 	/**
@@ -65,6 +68,9 @@ public class CustomerServiceTest {
 		assertNotNull(updatedCustomer);
 		assertEquals("Pulkit", customer.getCustomerName());
 
+		verify(customerRepo).findById(anyInt());
+		verify(customerRepo).save(any(Customer.class));
+
 	}
 
 	/**
@@ -79,6 +85,8 @@ public class CustomerServiceTest {
 		
 		assertThatThrownBy(()-> customerService.updateCustomer(customer, 1))
 		                .isInstanceOf(IdNotFoundException.class);
+		
+		verify(customerRepo).findById(anyInt());
 	}
 
 	/**
@@ -94,6 +102,7 @@ public class CustomerServiceTest {
 		assertEquals("Amit", customerService.getCustomerById(1).getCustomerName());
 		assertEquals("Punjab", customerService.getCustomerById(1).getCustomerAddress());
 		assertEquals(12345, customerService.getCustomerById(1).getCustomerNumber());
+
 	}
 
 	/**
@@ -107,6 +116,8 @@ public class CustomerServiceTest {
 		
 		assertThatThrownBy(() -> customerService.getCustomerById(1))
 		                   .isInstanceOf(IdNotFoundException.class);
+		
+		verify(customerRepo).findById(anyInt());
 	}
 
 	/**
@@ -123,6 +134,8 @@ public class CustomerServiceTest {
 		when(customerRepo.findAll()).thenReturn(customerList);
 		assertNotNull(customerList);
 		assertEquals(2, customerService.getAllCustomers().size());
+
+		verify(customerRepo).findAll();
 	}
 
 	/**
@@ -137,6 +150,8 @@ public class CustomerServiceTest {
 		when(customerRepo.findAll()).thenReturn(customerList);
 
 		assertThatThrownBy(() -> customerService.getAllCustomers()).isInstanceOf(ResourceNotFoundException.class);
+
+		verify(customerRepo).findAll();
 
 	}
 
