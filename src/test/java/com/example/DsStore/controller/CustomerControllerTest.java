@@ -43,7 +43,7 @@ public class CustomerControllerTest {
 	private ObjectMapper objectMapper;
 
 	@MockBean
-	private CustomerServiceImpl customerService;
+	private CustomerServiceImpl customerServiceImpl;
 
 	private Customer customer1;
 	private Customer customer2;
@@ -65,7 +65,7 @@ public class CustomerControllerTest {
 	 */
 	@Test
 	void createCustomerTest() throws Exception {
-		when(customerService.createCustomer(any(Customer.class))).thenReturn(customer1);
+		when(customerServiceImpl.createCustomer(any(Customer.class))).thenReturn(customer1);
 		
 		 this.mockMvc.perform(post("/api/customers/")
 	                .contentType(MediaType.APPLICATION_JSON)
@@ -86,7 +86,7 @@ public class CustomerControllerTest {
 		list.add(customer1);
 		list.add(customer2);
 
-		when(customerService.getAllCustomers()).thenReturn(list);
+		when(customerServiceImpl.getAllCustomers()).thenReturn(list);
 
 		this.mockMvc.perform(get("/api/customers/")).andExpect(status().isOk())
 				.andExpect(jsonPath("$.size()", is(list.size())));
@@ -99,7 +99,7 @@ public class CustomerControllerTest {
 	*/
 	@Test
 	void getcustomerByIdTest()throws Exception {
-		when(customerService.getCustomerById(anyInt())).thenReturn(customer1);
+		when(customerServiceImpl.getCustomerById(anyInt())).thenReturn(customer1);
 		
 		this.mockMvc.perform(get("/api/customers/1"))
 		.andExpect(status().isOk())
@@ -114,7 +114,7 @@ public class CustomerControllerTest {
 	*/
 	@Test
 	void updateCustomerTest() throws Exception {
-		when(customerService.updateCustomer(any(Customer.class), anyInt())).thenReturn(customer1);
+		when(customerServiceImpl.updateCustomer(any(Customer.class), anyInt())).thenReturn(customer1);
 		
 		 this.mockMvc.perform(put("/api/customers/1")
 	                .contentType(MediaType.APPLICATION_JSON)
@@ -131,7 +131,7 @@ public class CustomerControllerTest {
 	 */
 	@Test
 	void deleteCustomerTest() throws Exception {
-		doNothing().when(customerService).deleteCustomer(anyInt());
+		doNothing().when(customerServiceImpl).deleteCustomer(anyInt());
 
 		this.mockMvc.perform(delete("/api/customers/1")).andExpect(status().isOk());
 

@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
 		oldProduct.setAvalibity(changesProduct.isAvalibity());
 
 		Product updatedProduct = this.productRepo.save(oldProduct);
-		log.info("ProductUpdated");
+		log.info("Product Updated");
 		return updatedProduct;
 	}
 

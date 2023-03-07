@@ -8,7 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,13 +33,13 @@ public class Product {
 	@NotEmpty
 	@Size(min = 5, message = "Product Desc must be min of 8 characters")
 	private String productDesc;
-	@NotEmpty(message = "Please Enter Price")
+	@NotNull
 	private int price;
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date expiry;
-	@NotEmpty
+	@NotNull
 	private int count;
-	@NotEmpty
+	@NotNull
 	private boolean Avalibity;
 
 }
