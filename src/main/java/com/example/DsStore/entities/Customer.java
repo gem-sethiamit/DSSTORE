@@ -1,9 +1,14 @@
 package com.example.DsStore.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -30,4 +35,6 @@ public class Customer {
 	private String customerAddress;
 	@NotNull
 	private int customerNumber;
+//	@OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+//	private List<Orders> orders = new ArrayList<>();
 }

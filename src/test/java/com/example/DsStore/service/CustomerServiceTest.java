@@ -43,7 +43,7 @@ public class CustomerServiceTest {
 	 */
 	@Test
 	public void testCreateCustomer() {
-		Customer customer = new Customer(1, "Amit", "Punjab", 12345);
+		Customer customer = new Customer(1, "Amit", "Punjab", 12345, null);
 		when(customerRepo.save(any(Customer.class))).thenReturn(customer);
 		Customer newCustomer = customerServiceImpl.createCustomer(customer);
 		assertNotNull(newCustomer);
@@ -58,7 +58,7 @@ public class CustomerServiceTest {
 	 */
 	@Test
 	public void testUpdateCustomer() throws IdNotFoundException {
-		Customer customer = new Customer(1, "Amit", "Punjab", 12345);
+		Customer customer = new Customer(1, "Amit", "Punjab", 12345, null);
 		when(customerRepo.save(any(Customer.class))).thenReturn(customer);
 		when(customerRepo.findById(anyInt())).thenReturn(Optional.of(customer));
 
@@ -81,7 +81,7 @@ public class CustomerServiceTest {
 	@Test
 	public void testUpdateCustomerException() {
 		when(customerRepo.findById(anyInt())).thenReturn(Optional.empty());
-		Customer customer = new Customer(1, "Amit", "Punjab", 12345);
+		Customer customer = new Customer(1, "Amit", "Punjab", 12345, null);
 		
 		assertThatThrownBy(()-> customerServiceImpl.updateCustomer(customer, 1))
 		                .isInstanceOf(IdNotFoundException.class);
@@ -96,7 +96,7 @@ public class CustomerServiceTest {
 	 */
 	@Test
 	public void testGetCustomerById() throws IdNotFoundException {
-		Customer customer = new Customer(1, "Amit", "Punjab", 12345);
+		Customer customer = new Customer(1, "Amit", "Punjab", 12345, null);
 
 		when(customerRepo.findById(anyInt())).thenReturn(Optional.of(customer));
 
@@ -130,8 +130,8 @@ public class CustomerServiceTest {
 	public void testGetAllCustomers() throws ResourceNotFoundException {
 		List<Customer> customerList = new ArrayList<>();
 
-		customerList.add(new Customer(1, "Amit", "Punjab", 12345));
-		customerList.add(new Customer(2, "Himanshu", "Chandigarh", 45678));
+		customerList.add(new Customer(1, "Amit", "Punjab", 12345, null));
+		customerList.add(new Customer(2, "Himanshu", "Chandigarh", 45678, null));
 
 		when(customerRepo.findAll()).thenReturn(customerList);
 
@@ -165,7 +165,7 @@ public class CustomerServiceTest {
 
 	@Test
 	public void testDeleteCustomer() {
-		Customer customer = new Customer(2, "Amit", "Punjab", 12345);
+		Customer customer = new Customer(2, "Amit", "Punjab", 12345, null);
 		when(customerRepo.findById(anyInt())).thenReturn(Optional.of(customer));
 		doNothing().when(customerRepo).delete(customer);
 
