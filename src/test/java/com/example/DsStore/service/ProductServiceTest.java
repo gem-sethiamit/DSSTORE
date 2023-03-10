@@ -41,7 +41,7 @@ public class ProductServiceTest {
 	 */
 	@Test
 	public void testCreateProduct() {
-		Product product = new Product(1, "DairyMilk", "Chocolate", 150, new Date(28 - 10 - 2025), 25, true, null);
+		Product product = new Product(1, "DairyMilk", "Chocolate", 150, new Date(28 - 10 - 2025), 25, true);
 		when(productRepo.save(any(Product.class))).thenReturn(product);
 		Product newProduct = productServiceImpl.createProduct(product);
 		assertNotNull(newProduct);
@@ -57,7 +57,7 @@ public class ProductServiceTest {
 	 */
 	@Test
 	public void testUpdateProduct() throws IdNotFoundException {
-		Product product = new Product(1, "DairyMilk", "Chocolate", 150, new Date(28 - 10 - 2025), 25, true, null);
+		Product product = new Product(1, "DairyMilk", "Chocolate", 150, new Date(28 - 10 - 2025), 25, true);
 		when(productRepo.save(any(Product.class))).thenReturn(product);
 		when(productRepo.findById(anyInt())).thenReturn(Optional.of(product));
 
@@ -79,7 +79,7 @@ public class ProductServiceTest {
 	@Test
 	public void testUpdateProductException() {
 		when(productRepo.findById(anyInt())).thenReturn(Optional.empty());
-		Product product = new Product(1, "DairyMilk", "Chocolate", 150,new Date(28-10-2025), 25, true, null);
+		Product product = new Product(1, "DairyMilk", "Chocolate", 150,new Date(28-10-2025), 25, true);
 		
 		assertThatThrownBy(() -> productServiceImpl.updateProduct(product, 1))
 							.isInstanceOf(IdNotFoundException.class);
@@ -94,7 +94,7 @@ public class ProductServiceTest {
 	 */
 	@Test
 	public void testGetProductById() throws IdNotFoundException {
-		Product product = new Product(1, "DairyMilk", "Chocolate", 150, new Date(28 - 10 - 2025), 25, true, null);
+		Product product = new Product(1, "DairyMilk", "Chocolate", 150, new Date(28 - 10 - 2025), 25, true);
 		when(productRepo.findById(anyInt())).thenReturn(Optional.of(product));
 
 		assertEquals(1, productServiceImpl.getProductbyId(1).getProductId());
@@ -126,8 +126,8 @@ public class ProductServiceTest {
 	public void testGetAllProducts() throws ResourceNotFoundException {
 		List<Product> productList = new ArrayList<>();
 
-		productList.add(new Product(1, "DairyMilk", "Chocolate", 150, new Date(28 - 10 - 2025), 25, true, null));
-		productList.add(new Product(2, "JellyBean", "Dessert", 200, new Date(03 - 06 - 2030), 40, true, null));
+		productList.add(new Product(1, "DairyMilk", "Chocolate", 150, new Date(28 - 10 - 2025), 25, true));
+		productList.add(new Product(2, "JellyBean", "Dessert", 200, new Date(03 - 06 - 2030), 40, true));
 
 		when(productRepo.findAll()).thenReturn(productList);
 
@@ -159,7 +159,7 @@ public class ProductServiceTest {
 	 */
 	@Test
 	public void testDeleteProduct() {
-		Product product = new Product(2, "DairyMilk", "Chocolate", 150, new Date(28 - 10 - 2025), 25, true, null);
+		Product product = new Product(2, "DairyMilk", "Chocolate", 150, new Date(28 - 10 - 2025), 25, true);
 		when(productRepo.findById(anyInt())).thenReturn(Optional.of(product));
 
 		productServiceImpl.deleteProduct(product.getProductId());

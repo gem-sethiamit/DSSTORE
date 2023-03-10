@@ -51,8 +51,8 @@ public class ProductControllerTest {
 	 */
 	@BeforeEach
 	void intit() {
-		product1 = new Product(1, "DairyMilk", "Chocolate", 150, new Date(28 - 10 - 2025), 25, true, null);
-		product2 = new Product(2, "JellyBean", "Dessert", 200, new Date(03 - 06 - 2030), 40, true, null);
+		product1 = new Product(1, "DairyMilk", "Chocolate", 150, new Date(28 - 10 - 2025), 25, true);
+		product2 = new Product(2, "JellyBean", "Dessert", 200, new Date(03 - 06 - 2030), 40, true);
 	}
 
 	/**

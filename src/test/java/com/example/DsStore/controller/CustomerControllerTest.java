@@ -54,8 +54,8 @@ public class CustomerControllerTest {
 	 */
 	@BeforeEach
 	void intit() {
-		customer1 = new Customer(1, "Amit", "Punjab", 12345, null);
-		customer2 = new Customer(2, "Himanshu", "Chandigarh", 45678, null);
+		customer1 = new Customer(1, "Amit", "Punjab", 12345);
+		customer2 = new Customer(2, "Himanshu", "Chandigarh", 45678);
 	}
 
 	/**

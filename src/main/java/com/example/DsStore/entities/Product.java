@@ -44,7 +44,5 @@ public class Product {
 	@NotNull
 	private int count;
 	@NotNull
-	private boolean Avalibity;
-//	@OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
-//	private List<Orders> orders = new ArrayList<>();
+	private boolean avalibity;
 }
