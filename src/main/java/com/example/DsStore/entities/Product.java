@@ -29,7 +29,6 @@ import lombok.Setter;
 public class Product {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int productId;
 	@NotEmpty
 	@Size(min = 4, message = "Product name must be min of 4 characters !!")

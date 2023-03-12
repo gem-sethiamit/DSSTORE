@@ -2,7 +2,7 @@ package com.example.DsStore.entities;
 
 import java.util.Date;
 
-import com.example.DsStore.config.Auditable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,6 +42,16 @@ public class Orders {
 
 	public Date getOrderTimeStamp() {
 		return new Date(orderTimeStamp.getTime());
+	}
+
+	@JsonIgnore
+	public Customer getCustomer() {
+		return customer;
+	}
+	
+	@JsonIgnore
+	public Product getProduct() {
+		return product;
 	}
 
 }
