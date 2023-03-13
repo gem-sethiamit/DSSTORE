@@ -2,15 +2,12 @@ package com.example.DsStore.entities;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,27 +18,29 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Orders {
-
+public class BackOrders {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int orderId;
-	private Date orderTimeStamp;
+	private int backOrderId;
+
+	private Date backOrderTimeStamp;
+
 	private int quantity;
 
 	@ManyToOne
 	@JoinColumn(name = "customerId")
-	private Customer customer;
-	@ManyToOne
-	@JoinColumn(name = "productId")
 	private Product product;
 
-	public void setOrderTimeStamp(Date currDate) {
-		this.orderTimeStamp = currDate;
+	@ManyToOne
+	@JoinColumn(name = "productId")
+	private Customer customer;
+
+	public void setBackOrderTimeStamp(Date currDate) {
+		this.backOrderTimeStamp = currDate;
 	}
 
-	public Date getOrderTimeStamp() {
-		return new Date(orderTimeStamp.getTime());
+	public Date getBackOrderTimeStamp() {
+		return new Date(backOrderTimeStamp.getTime());
 	}
 
 }

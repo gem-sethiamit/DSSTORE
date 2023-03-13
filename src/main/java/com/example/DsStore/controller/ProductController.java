@@ -59,6 +59,21 @@ public class ProductController {
 	}
 
 	/**
+	 * Put request to add count in existing Product inventory based on given Product
+	 * Id.
+	 * 
+	 * @throws IdNotFoundException if Product id not found
+	 * @return ResponseEntity <addProductCount>
+	 */
+	@PutMapping("/add/{productId}")
+	public ResponseEntity<Product> addProductCount(@Valid @RequestBody Product product, @PathVariable Integer productId)
+			throws IdNotFoundException {
+		Product addProductCount = this.productService.countAddofProduct(product, productId);
+		log.info("Product Quantity added");
+		return ResponseEntity.ok(addProductCount);
+	}
+
+	/**
 	 * Delete request to delete product from product database.
 	 * 
 	 * @throws IdNotFoundException if Product id not found
@@ -90,7 +105,7 @@ public class ProductController {
 	 * @throws IdNotFoundException if Product id not found
 	 */
 	@GetMapping("/{productId}")
-	public ResponseEntity<Product> getCProduct(@PathVariable Integer productId) throws IdNotFoundException {
+	public ResponseEntity<Product> getProductById(@PathVariable Integer productId) throws IdNotFoundException {
 		log.info("Get Product by Id");
 		return ResponseEntity.ok(this.productService.getProductbyId(productId));
 	}

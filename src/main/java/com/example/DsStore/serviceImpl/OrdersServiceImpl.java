@@ -6,12 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.DsStore.entities.BackOrders;
 import com.example.DsStore.entities.Customer;
 import com.example.DsStore.entities.Orders;
 import com.example.DsStore.entities.Product;
 import com.example.DsStore.exceptions.ApiResponse;
 import com.example.DsStore.exceptions.IdNotFoundException;
 import com.example.DsStore.exceptions.ResourceNotFoundException;
+import com.example.DsStore.repositories.BackOrdersRepo;
 import com.example.DsStore.repositories.CustomerRepo;
 import com.example.DsStore.repositories.OrdersRepo;
 import com.example.DsStore.repositories.ProductRepo;
@@ -36,6 +38,9 @@ public class OrdersServiceImpl implements OrdersService {
 	@Autowired
 	private ProductServiceImpl productServiceImpl;
 
+	@Autowired
+	private BackOrdersServiceImpl backOrdersServiceImpl;
+
 	/**
 	 * This method is used to create Order in the database.
 	 *
@@ -54,12 +59,16 @@ public class OrdersServiceImpl implements OrdersService {
 
 		int orderQuantity = orders.getQuantity();
 		int productCount = productFound.getCount();
-		if (productCount >= orderQuantity) {
+		Boolean Availabity = productFound.isAvalibity();
+
+		if (productCount >= orderQuantity && Availabity == true) {
 			productCount = productCount - orderQuantity;
 			productFound.setCount(productCount);
 			productServiceImpl.updateProduct(productFound, productId);
+
 		} else {
-			throw new ResourceNotFoundException("Product count is less we addedd order in backlog");
+			backOrdersServiceImpl.createBackOrdersbyOrder(customerFound, productFound, orderQuantity);
+			throw new ResourceNotFoundException("Product count is less We addedd order in backlog");
 		}
 
 		orders.setOrderTimeStamp(new Date());
@@ -67,7 +76,7 @@ public class OrdersServiceImpl implements OrdersService {
 		orders.setProduct(productFound);
 
 		Orders savedOrder = this.ordersRepo.save(orders);
-
+		log.info("Order Created");
 		return savedOrder;
 	}
 
@@ -82,6 +91,7 @@ public class OrdersServiceImpl implements OrdersService {
 			throws IdNotFoundException {
 		Orders oldOrder = this.ordersRepo.findById(orderId)
 				.orElseThrow(() -> new IdNotFoundException("Order", "Order Id", orderId));
+
 		Customer customerFound = this.customerRepo.findById(customerId)
 				.orElseThrow(() -> new IdNotFoundException("Customer", "Customer Id", customerId));
 

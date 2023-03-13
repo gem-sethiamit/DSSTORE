@@ -12,9 +12,11 @@ public interface ProductService {
 
 	Product updateProduct(Product product, Integer productId) throws IdNotFoundException;
 
+	Product countAddofProduct(Product product, Integer productId) throws IdNotFoundException;
+
 	Product getProductbyId(Integer productId) throws IdNotFoundException;
-	
+
 	List<Product> getAllProducts() throws ResourceNotFoundException;
-	
+
 	void deleteProduct(Integer productId) throws IdNotFoundException;
 }
