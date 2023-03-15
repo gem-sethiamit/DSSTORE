@@ -19,6 +19,6 @@ public interface OrdersService {
 
 	List<Orders> getAllOrders() throws ResourceNotFoundException;
 
-	void delteOrder(Integer orderId) throws IdNotFoundException;
+	void deleteOrder(Integer orderId) throws IdNotFoundException;
 
 }

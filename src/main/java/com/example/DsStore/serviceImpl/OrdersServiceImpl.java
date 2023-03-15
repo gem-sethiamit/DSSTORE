@@ -133,7 +133,7 @@ public class OrdersServiceImpl implements OrdersService {
 	/**
 	 * This method is used to Get All the Orders from database.
 	 *
-	 * @return customers
+	 * @return orders
 	 * @throws ResourceNotFoundException if No data found in database
 	 */
 	@Override
@@ -154,7 +154,7 @@ public class OrdersServiceImpl implements OrdersService {
 	 * @throws IdNotFoundException No orderId found
 	 */
 	@Override
-	public void delteOrder(Integer orderId) throws IdNotFoundException {
+	public void deleteOrder(Integer orderId) throws IdNotFoundException {
 		Orders orderDelete = this.ordersRepo.findById(orderId)
 				.orElseThrow(() -> new IdNotFoundException("Order", "Order Id", orderId));
 

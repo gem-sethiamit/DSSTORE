@@ -131,7 +131,7 @@ public class OrdersController {
 			@ApiResponse(responseCode = "500", description = "Internal server error", content = @Content) })
 	@DeleteMapping("/orders/{orderId}")
 	public ResponseEntity<ApiErrorResponse> deleteOrder(@PathVariable Integer orderId) throws IdNotFoundException {
-		this.ordersService.delteOrder(orderId);
+		this.ordersService.deleteOrder(orderId);
 		log.info("Order Deleted");
 		return new ResponseEntity<ApiErrorResponse>(new ApiErrorResponse("Order deleted successfully", true),
 				HttpStatus.OK);

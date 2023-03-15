@@ -24,7 +24,7 @@ public class BackOrdersServiceImpl implements BackOrdersService {
 	private BackOrdersRepo backOrdersRepo;
 
 	@Override
-	public void createBackOrdersbyOrder(Customer customerFound, Product productFound, Integer orderQuantity) {
+	public BackOrders createBackOrdersbyOrder(Customer customerFound, Product productFound, Integer orderQuantity) {
 		BackOrders backOrders = new BackOrders();
 		backOrders.setCustomer(customerFound);
 		backOrders.setProduct(productFound);
@@ -32,8 +32,15 @@ public class BackOrdersServiceImpl implements BackOrdersService {
 		backOrders.setBackOrderTimeStamp(new Date());
 		this.backOrdersRepo.save(backOrders);
 		log.info("BackOrder  Created");
+		return backOrders;
 	}
 
+	/**
+	 * This method is used to Get specific backOrder from database based on id.
+	 *
+	 * @return backorderFound
+	 * @throws IdNotFoundException No backorderId found
+	 */
 	@Override
 	public BackOrders getBackOrderById(Integer backOrderId) throws IdNotFoundException {
 		BackOrders backOrdersFound = this.backOrdersRepo.findById(backOrderId)
@@ -42,6 +49,12 @@ public class BackOrdersServiceImpl implements BackOrdersService {
 		return backOrdersFound;
 	}
 
+	/**
+	 * This method is used to Get All the backOrders from database.
+	 *
+	 * @return backOrders
+	 * @throws ResourceNotFoundException if No data found in database
+	 */
 	@Override
 	public List<BackOrders> getAllbackOrders() throws ResourceNotFoundException {
 		List<BackOrders> backOrders = this.backOrdersRepo.findAll();
@@ -53,6 +66,12 @@ public class BackOrdersServiceImpl implements BackOrdersService {
 		return backOrders;
 	}
 
+	/**
+	 * This method is used to delete the specific backorder from the database on backorder
+	 * id.
+	 *
+	 * @throws IdNotFoundException No backorderId found
+	 */
 	@Override
 	public void delteOrder(Integer backOrderId) throws IdNotFoundException {
 		BackOrders backOrderDelete = this.backOrdersRepo.findById(backOrderId)

@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
@@ -70,6 +71,8 @@ class ProductControllerTest {
 		 			.andExpect(status().isCreated())
 		 			.andExpect(jsonPath("$.productName",is(product1.getProductName())))
 		 			.andExpect(jsonPath("$.productDesc",is(product1.getProductDesc())));
+		 
+		 verify(productServiceImpl).createProduct(any(Product.class));
 	}
 
 	/**
@@ -88,6 +91,8 @@ class ProductControllerTest {
 		this.mockMvc.perform(get("/api/products/")).andExpect(status().isOk())
 				.andExpect(jsonPath("$.size()", is(list.size())));
 
+		verify(productServiceImpl).getAllProducts();
+
 	}
 
 	/**
@@ -103,6 +108,8 @@ class ProductControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.productName",is(product1.getProductName())))
 		.andExpect(jsonPath("$.productDesc",is(product1.getProductDesc())));
+		
+		verify(productServiceImpl).getProductbyId(anyInt());
 	}
 
 	/**
@@ -120,6 +127,26 @@ class ProductControllerTest {
 		 			.andExpect(status().isOk())
 		 			.andExpect(jsonPath("$.productName",is(product1.getProductName())))
 		 			.andExpect(jsonPath("$.productDesc",is(product1.getProductDesc())));
+		 
+		 verify(productServiceImpl).updateProduct(any(Product.class), anyInt());
+	}
+
+	/**
+	*Add product count
+	*
+	*@throws Exception
+	*/
+	@Test
+	void addProductCountTest() throws Exception {
+		when(productServiceImpl.countAddofProduct(any(Product.class), anyInt())).thenReturn(product1);
+		
+		this.mockMvc.perform(put("/api/products/add/1")
+				.contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(product1)))
+	 			.andExpect(status().isOk())
+	 			.andExpect(jsonPath("$.count",is(25)));
+		
+		verify(productServiceImpl).countAddofProduct(any(Product.class), anyInt());
 	}
 
 	/**
@@ -132,6 +159,8 @@ class ProductControllerTest {
 		doNothing().when(productServiceImpl).deleteProduct(anyInt());
 
 		this.mockMvc.perform(delete("/api/products/1")).andExpect(status().isOk());
+		
+		verify(productServiceImpl).deleteProduct(anyInt());
 	}
 
 }

@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -73,6 +74,8 @@ class CustomerControllerTest {
 		 			.andExpect(status().isCreated())
 		 			.andExpect(jsonPath("$.customerName",is(customer1.getCustomerName())))
 		 			.andExpect(jsonPath("$.customerAddress",is(customer1.getCustomerAddress())));
+		 
+		 verify(customerServiceImpl).createCustomer(any(Customer.class));
 	}
 
 	/**
@@ -90,6 +93,8 @@ class CustomerControllerTest {
 
 		this.mockMvc.perform(get("/api/customers/")).andExpect(status().isOk())
 				.andExpect(jsonPath("$.size()", is(list.size())));
+
+		verify(customerServiceImpl).getAllCustomers();
 	}
 
 	/**
@@ -105,6 +110,8 @@ class CustomerControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.customerName",is(customer1.getCustomerName())))
 		.andExpect(jsonPath("$.customerAddress",is(customer1.getCustomerAddress())));
+		
+		 verify(customerServiceImpl).getCustomerById(anyInt());
 	}
 
 	/**
@@ -122,6 +129,8 @@ class CustomerControllerTest {
 		 			.andExpect(status().isOk())
 		 			.andExpect(jsonPath("$.customerName",is(customer1.getCustomerName())))
 		 			.andExpect(jsonPath("$.customerAddress",is(customer1.getCustomerAddress())));
+		 
+		 verify(customerServiceImpl).updateCustomer(any(Customer.class), anyInt());
 	}
 
 	/**
@@ -132,8 +141,9 @@ class CustomerControllerTest {
 	@Test
 	void deleteCustomerTest() throws Exception {
 		doNothing().when(customerServiceImpl).deleteCustomer(anyInt());
-
 		this.mockMvc.perform(delete("/api/customers/1")).andExpect(status().isOk());
+
+		verify(customerServiceImpl).deleteCustomer(anyInt());
 
 	}
 

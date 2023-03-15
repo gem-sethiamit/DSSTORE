@@ -10,7 +10,7 @@ import com.example.DsStore.exceptions.ResourceNotFoundException;
 
 public interface BackOrdersService {
 
-	void createBackOrdersbyOrder(Customer customerFound, Product productFound, Integer orderQuantity);
+	BackOrders createBackOrdersbyOrder(Customer customerFound, Product productFound, Integer orderQuantity);
 
 	BackOrders getBackOrderById(Integer backOrderId) throws IdNotFoundException;
 
