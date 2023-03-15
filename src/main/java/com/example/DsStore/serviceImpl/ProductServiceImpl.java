@@ -63,8 +63,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	/**
-	 * This method is used to add Product into Product inventory,
-	 * then backlogs are checked if any backlog is found first it is cleared.
+	 * This method is used to add Product into Product inventory, then backlogs are
+	 * checked if any backlog is found first it is cleared.
 	 * 
 	 * @return addCountProduct
 	 * @throws IdNotFoundException No productId found
@@ -83,9 +83,8 @@ public class ProductServiceImpl implements ProductService {
 			if (backOrder.getProduct().getProductId() == oldProduct.getProductId()) {
 				if (oldProduct.getCount() >= backOrder.getQuantity() && oldProduct.isAvalibity() == true) {
 					oldProduct.setCount(oldProduct.getCount() - backOrder.getQuantity());
-					log.info("Subtracted Product Inventory {} from Backorder {}", oldProduct.getCount(),
-							backOrder.getQuantity());
 					backOrdersRepo.delete(backOrder);
+					log.info("BackOrder deleted " + backOrder.getProduct().getProductId());
 				}
 
 			}

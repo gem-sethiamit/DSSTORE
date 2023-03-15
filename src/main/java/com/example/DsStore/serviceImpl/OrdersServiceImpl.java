@@ -6,14 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.DsStore.entities.BackOrders;
 import com.example.DsStore.entities.Customer;
 import com.example.DsStore.entities.Orders;
 import com.example.DsStore.entities.Product;
-import com.example.DsStore.exceptions.ApiResponse;
 import com.example.DsStore.exceptions.IdNotFoundException;
 import com.example.DsStore.exceptions.ResourceNotFoundException;
-import com.example.DsStore.repositories.BackOrdersRepo;
+
 import com.example.DsStore.repositories.CustomerRepo;
 import com.example.DsStore.repositories.OrdersRepo;
 import com.example.DsStore.repositories.ProductRepo;
@@ -43,7 +41,11 @@ public class OrdersServiceImpl implements OrdersService {
 
 	/**
 	 * This method is used to create Order in the database.
-	 *
+	 * 
+	 * @param orders     - Orders Details
+	 * @param customerId id of Customer
+	 * @param productId  id of Product
+	 * 
 	 * @return savedOrder
 	 * @throws ResourceNotFoundException
 	 */
@@ -76,7 +78,13 @@ public class OrdersServiceImpl implements OrdersService {
 		orders.setProduct(productFound);
 
 		Orders savedOrder = this.ordersRepo.save(orders);
-		log.info("Order Created");
+		int orderPrice = orders.getQuantity() * productFound.getPrice();
+		if (orderPrice >= 1000) {
+			orderPrice = orderPrice - 100;
+			log.info("Order price is is above 1000 you got 100 rs Flat off " + orderPrice);
+		} else {
+			log.info("Order Created with price " + orderPrice);
+		}
 		return savedOrder;
 	}
 
@@ -131,6 +139,10 @@ public class OrdersServiceImpl implements OrdersService {
 	@Override
 	public List<Orders> getAllOrders() throws ResourceNotFoundException {
 		List<Orders> orders = this.ordersRepo.findAll();
+		if (orders.isEmpty()) {
+			log.error("Nothing found in orders ");
+			throw new ResourceNotFoundException("No data present in database");
+		}
 		log.info("Order list found size " + orders.size());
 		return orders;
 	}

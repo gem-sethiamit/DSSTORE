@@ -45,6 +45,10 @@ public class BackOrdersServiceImpl implements BackOrdersService {
 	@Override
 	public List<BackOrders> getAllbackOrders() throws ResourceNotFoundException {
 		List<BackOrders> backOrders = this.backOrdersRepo.findAll();
+		if (backOrders.isEmpty()) {
+			log.error("Nothing found in orders ");
+			throw new ResourceNotFoundException("No data present in database");
+		}
 		log.info("backOrder list found " + backOrders.size());
 		return backOrders;
 	}

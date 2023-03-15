@@ -27,7 +27,7 @@ import com.example.DsStore.repositories.ProductRepo;
 import com.example.DsStore.serviceImpl.ProductServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
-public class ProductServiceTest {
+class ProductServiceTest {
 
 	@Mock
 	ProductRepo productRepo;
@@ -40,7 +40,7 @@ public class ProductServiceTest {
 	 *
 	 */
 	@Test
-	public void testCreateProduct() {
+	void testCreateProduct() {
 		Product product = new Product(1, "DairyMilk", "Chocolate", 150, new Date(28 - 10 - 2025), 25, true);
 		when(productRepo.save(any(Product.class))).thenReturn(product);
 		Product newProduct = productServiceImpl.createProduct(product);
@@ -56,7 +56,7 @@ public class ProductServiceTest {
 	 * @throws IdNotFoundException id not found
 	 */
 	@Test
-	public void testUpdateProduct() throws IdNotFoundException {
+	void testUpdateProduct() throws IdNotFoundException {
 		Product product = new Product(1, "DairyMilk", "Chocolate", 150, new Date(28 - 10 - 2025), 25, true);
 		when(productRepo.save(any(Product.class))).thenReturn(product);
 		when(productRepo.findById(anyInt())).thenReturn(Optional.of(product));
@@ -77,7 +77,7 @@ public class ProductServiceTest {
 	 * @throws IdNotFoundException id not found
 	 */
 	@Test
-	public void testUpdateProductException() {
+	 void testUpdateProductException() {
 		when(productRepo.findById(anyInt())).thenReturn(Optional.empty());
 		Product product = new Product(1, "DairyMilk", "Chocolate", 150,new Date(28-10-2025), 25, true);
 		

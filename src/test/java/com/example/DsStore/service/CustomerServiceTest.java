@@ -29,7 +29,7 @@ import com.example.DsStore.serviceImpl.CustomerServiceImpl;
 import com.example.DsStore.entities.Customer;
 
 @ExtendWith(MockitoExtension.class)
-public class CustomerServiceTest {
+class CustomerServiceTest {
 
 	@Mock
 	CustomerRepo customerRepo;
@@ -42,7 +42,7 @@ public class CustomerServiceTest {
 	 *
 	 */
 	@Test
-	public void testCreateCustomer() {
+	void testCreateCustomer() {
 		Customer customer = new Customer(1, "Amit", "Punjab", 12345);
 		when(customerRepo.save(any(Customer.class))).thenReturn(customer);
 		Customer newCustomer = customerServiceImpl.createCustomer(customer);
@@ -57,7 +57,7 @@ public class CustomerServiceTest {
 	 * @throws IdNotFoundException id not found
 	 */
 	@Test
-	public void testUpdateCustomer() throws IdNotFoundException {
+	void testUpdateCustomer() throws IdNotFoundException {
 		Customer customer = new Customer(1, "Amit", "Punjab", 12345);
 		when(customerRepo.save(any(Customer.class))).thenReturn(customer);
 		when(customerRepo.findById(anyInt())).thenReturn(Optional.of(customer));
@@ -79,7 +79,7 @@ public class CustomerServiceTest {
 	 * @throws IdNotFoundException id not found
 	 */
 	@Test
-	public void testUpdateCustomerException() {
+	 void testUpdateCustomerException() {
 		when(customerRepo.findById(anyInt())).thenReturn(Optional.empty());
 		Customer customer = new Customer(1, "Amit", "Punjab", 12345);
 		
@@ -95,7 +95,7 @@ public class CustomerServiceTest {
 	 * @throws IdNotFoundException id not found
 	 */
 	@Test
-	public void testGetCustomerById() throws IdNotFoundException {
+	void testGetCustomerById() throws IdNotFoundException {
 		Customer customer = new Customer(1, "Amit", "Punjab", 12345);
 
 		when(customerRepo.findById(anyInt())).thenReturn(Optional.of(customer));
@@ -111,7 +111,7 @@ public class CustomerServiceTest {
 	 * @throws IdNotFoundException id not found
 	 */
 	@Test
-	public void testGetCustomerByIdException() {
+	 void testGetCustomerByIdException() {
 		when(customerRepo.findById(anyInt())).thenReturn(Optional.empty());
 		
 		assertThatThrownBy(() -> customerServiceImpl.getCustomerById(1))
@@ -127,7 +127,7 @@ public class CustomerServiceTest {
 	 */
 
 	@Test
-	public void testGetAllCustomers() throws ResourceNotFoundException {
+	void testGetAllCustomers() throws ResourceNotFoundException {
 		List<Customer> customerList = new ArrayList<>();
 
 		customerList.add(new Customer(1, "Amit", "Punjab", 12345));
@@ -148,7 +148,7 @@ public class CustomerServiceTest {
 	 */
 
 	@Test
-	public void testGetAllCustomersException() {
+	void testGetAllCustomersException() {
 		List<Customer> customerList = new ArrayList<>();
 		when(customerRepo.findAll()).thenReturn(customerList);
 
@@ -164,7 +164,7 @@ public class CustomerServiceTest {
 	 */
 
 	@Test
-	public void testDeleteCustomer() {
+	void testDeleteCustomer() {
 		Customer customer = new Customer(2, "Amit", "Punjab", 12345);
 		when(customerRepo.findById(anyInt())).thenReturn(Optional.of(customer));
 		doNothing().when(customerRepo).delete(customer);

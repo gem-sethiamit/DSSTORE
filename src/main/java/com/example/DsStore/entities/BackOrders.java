@@ -24,7 +24,6 @@ public class BackOrders {
 	private int backOrderId;
 
 	private Date backOrderTimeStamp;
-
 	private int quantity;
 
 	@ManyToOne

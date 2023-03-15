@@ -31,7 +31,7 @@ import com.example.DsStore.serviceImpl.ProductServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(value = ProductController.class)
-public class ProductControllerTest {
+class ProductControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;

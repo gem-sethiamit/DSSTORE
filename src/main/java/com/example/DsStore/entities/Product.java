@@ -15,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,7 @@ import lombok.Setter;
 public class Product {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int productId;
 	@NotEmpty
 	@Size(min = 4, message = "Product name must be min of 4 characters !!")
@@ -41,6 +43,7 @@ public class Product {
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date expiry;
 	@NotNull
+	@Positive(message = "Count should be greater than 0")
 	private int count;
 	@NotNull
 	private boolean avalibity;
