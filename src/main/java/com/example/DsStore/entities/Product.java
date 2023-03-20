@@ -1,9 +1,14 @@
 package com.example.DsStore.entities;
 
+import java.sql.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,17 +22,24 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Customer {
+public class Product {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int customerId;
+	private int productId;
 	@NotEmpty
-	@Size(min = 4, message = "Customer name must be min of 4 characters !!")
-	private String customerName;
+	@Size(min = 4, message = "Product name must be min of 4 characters !!")
+	private String productName;
 	@NotEmpty
-	@Size(min = 5, message = "Customer Address must be min of 8 characters")
-	private String customerAddress;
+	@Size(min = 5, message = "Product Desc must be min of 8 characters")
+	private String productDesc;
 	@NotNull
-	private int customerNumber;
+	private int price;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Date expiry;
+	@NotNull
+	private int count;
+	@NotNull
+	private boolean Avalibity;
+
 }
