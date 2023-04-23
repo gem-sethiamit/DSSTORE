@@ -37,7 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
 	 * This method is used to update Customer in the database.
 	 *
 	 * @return updatedCustomer
-	 * @throws IdNotFoundException No productId found
+	 * @throws IdNotFoundException No customerId found
 	 */
 	@Override
 	public Customer updateCustomer(Customer changesCustomer, Integer customerId) {

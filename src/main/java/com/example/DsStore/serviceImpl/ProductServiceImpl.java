@@ -1,14 +1,17 @@
 package com.example.DsStore.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.DsStore.entities.BackOrders;
 import com.example.DsStore.entities.Customer;
 import com.example.DsStore.entities.Product;
 import com.example.DsStore.exceptions.IdNotFoundException;
 import com.example.DsStore.exceptions.ResourceNotFoundException;
+import com.example.DsStore.repositories.BackOrdersRepo;
 import com.example.DsStore.repositories.ProductRepo;
 import com.example.DsStore.services.ProductService;
 
@@ -21,13 +24,16 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductRepo productRepo;
 
+	@Autowired
+	private BackOrdersRepo backOrdersRepo;
+
 	/**
 	 * This method is used to create Product to the database.
 	 *
 	 * @return savedProduct
 	 */
-	@Override
 	public Product createProduct(Product product) {
+
 		Product savedProduct = this.productRepo.save(product);
 		log.info("new product created");
 		return savedProduct;
@@ -43,6 +49,7 @@ public class ProductServiceImpl implements ProductService {
 	public Product updateProduct(Product changesProduct, Integer productId) throws IdNotFoundException {
 		Product oldProduct = this.productRepo.findById(productId)
 				.orElseThrow(() -> new IdNotFoundException("Product", "Product Id", productId));
+
 		oldProduct.setProductName(changesProduct.getProductName());
 		oldProduct.setProductDesc(changesProduct.getProductDesc());
 		oldProduct.setPrice(changesProduct.getPrice());
@@ -53,6 +60,39 @@ public class ProductServiceImpl implements ProductService {
 		Product updatedProduct = this.productRepo.save(oldProduct);
 		log.info("Product Updated");
 		return updatedProduct;
+	}
+
+	/**
+	 * This method is used to add Product into Product inventory, then backlogs are
+	 * checked if any backlog is found first it is cleared.
+	 * 
+	 * @return addCountProduct
+	 * @throws IdNotFoundException No productId found
+	 */
+	@Override
+	public Product countAddofProduct(Product changedProduct, Integer productId) throws IdNotFoundException {
+
+		Product oldProduct = this.productRepo.findById(productId)
+				.orElseThrow(() -> new IdNotFoundException("Product", "Product Id", productId));
+
+		oldProduct.setCount(oldProduct.getCount() + changedProduct.getCount());
+
+		List<BackOrders> backOrders = this.backOrdersRepo.findAll();
+
+		for (BackOrders backOrder : backOrders) {
+			if (backOrder.getProduct().getProductId() == oldProduct.getProductId()) {
+				if (oldProduct.getCount() >= backOrder.getQuantity() && oldProduct.isAvalibity() == true) {
+					oldProduct.setCount(oldProduct.getCount() - backOrder.getQuantity());
+					backOrdersRepo.delete(backOrder);
+					log.info("BackOrder deleted " + backOrder.getProduct().getProductId());
+				}
+
+			}
+		}
+
+		Product addCountProduct = this.productRepo.save(oldProduct);
+		log.info("new count  " + oldProduct.getCount());
+		return addCountProduct;
 	}
 
 	/**

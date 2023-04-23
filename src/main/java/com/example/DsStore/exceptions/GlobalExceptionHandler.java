@@ -20,22 +20,22 @@ public class GlobalExceptionHandler {
 	 * @return ResponseEntity <ApiResponse>
 	 */
 	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<ApiResponse> resourceNotFoundExceptionHandler(ResourceNotFoundException ex) {
+	public ResponseEntity<ApiErrorResponse> resourceNotFoundExceptionHandler(ResourceNotFoundException ex) {
 		String message = ex.getMessage();
-		ApiResponse errorDetails = new ApiResponse(message, false);
-		return new ResponseEntity<ApiResponse>(errorDetails, HttpStatus.NOT_FOUND);
+		ApiErrorResponse errorDetails = new ApiErrorResponse(message, false);
+		return new ResponseEntity<ApiErrorResponse>(errorDetails, HttpStatus.NOT_FOUND);
 	}
-	
+
 	/**
 	 * Handles exception for invalid id.
 	 *
 	 * @return ResponseEntity <ApiResponse>
 	 */
 	@ExceptionHandler(IdNotFoundException.class)
-	public ResponseEntity<ApiResponse> idNotFoundExceptionHandler(IdNotFoundException ex) {
+	public ResponseEntity<ApiErrorResponse> idNotFoundExceptionHandler(IdNotFoundException ex) {
 		String message = ex.getMessage();
-		ApiResponse errorDetails = new ApiResponse(message, false);
-		return new ResponseEntity<ApiResponse>(errorDetails, HttpStatus.NOT_FOUND);
+		ApiErrorResponse errorDetails = new ApiErrorResponse(message, false);
+		return new ResponseEntity<ApiErrorResponse>(errorDetails, HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -44,9 +44,9 @@ public class GlobalExceptionHandler {
 	 * @return ResponseEntity<?>
 	 */
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<?> globalExceptionHandler(Exception ex, WebRequest request) {
+	public ResponseEntity<ApiErrorResponse> globalExceptionHandler(Exception ex, WebRequest request) {
 		String message = ex.getMessage();
-		ApiResponse errorDetails = new ApiResponse(message, false);
+		ApiErrorResponse errorDetails = new ApiErrorResponse(message, false);
 		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
 	}
 

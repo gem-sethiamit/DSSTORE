@@ -1,16 +1,21 @@
 package com.example.DsStore.entities;
 
-import java.sql.Date;
+import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +30,7 @@ import lombok.Setter;
 public class Product {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int productId;
 	@NotEmpty
 	@Size(min = 4, message = "Product name must be min of 4 characters !!")
@@ -38,8 +43,8 @@ public class Product {
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date expiry;
 	@NotNull
+	@Positive(message = "Count should be greater than 0")
 	private int count;
 	@NotNull
-	private boolean Avalibity;
-
+	private boolean avalibity;
 }
